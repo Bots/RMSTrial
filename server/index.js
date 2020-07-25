@@ -2,35 +2,23 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const morgan = require('morgan')
+const db = require('./queries')
 const app = express()
 const port = 3001
-const Pool = require('pg').Pool
-const pool = new Pool({
-  host: 'postgres',
-  port: 5432,
-  user: 'postgres',
-  password: 'example',
-  database: 'testdata'
-})
+
 app.use(cors())
 app.use(bodyParser.json())
 app.use(
   bodyParser.urlencoded({ extended: true })
-)   
+)
 
+app.post('/api', db.createUserDB)
+
+app.get('/api', db.getUserDB)
+
+app.get('/api/clear', db.clearDB)
+  
 morgan('tiny')
-
-app.get('/', (request, response) => {
-  response.json({ info: 'It works!' })
-})
-
-app.get('/test_query', (request, response) => {
-  let q = 'SELECT * FROM data ORDER BY id ASC';
-  pool.query(q, (error, results) => {
-    if (error) { throw error }
-    response.status(200).json(results.rows)
-  })
-})
 
 app.listen(port, () => {
   console.log(`running on port ${port}.`)

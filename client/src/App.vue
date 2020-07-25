@@ -26,49 +26,37 @@
 
       <template v-slot:extension>
         <v-tabs align-with-title>
-          <v-tab href="/" router>Home</v-tab>
-          <v-tab href="/save" router>Save</v-tab>
-          <v-tab href="/fetch" router>Fetch</v-tab>
+          <v-tab to="/" replace>Home</v-tab>
+          <v-tab to="/save" replace>Save</v-tab>
+          <v-tab to="/fetch" replace>Fetch</v-tab>
         </v-tabs>
       </template>
     </v-app-bar>
-    <v-sheet
-      id="scrolling-techniques-3"
-      class="overflow-y-auto"
-      max-height="600"
-    >
-      <v-container style="height: 1000px;">
-        <Home v-if="dataLoaded" :clients="clients" style="margin-top: 250px"></Home>
-      </v-container>
+    <v-sheet id="scrolling-techniques-3" style="padding-top: 250px">
+      <router-view/>
     </v-sheet>
   </v-card>
   </v-app>
 </template>
 
 <script>
-import Home from './components/Home'
-const fetch = require('node-fetch')
+// import Home from './components/Home'
+// import Save from './components/Save'
+// import Fetch from './components/Fetch'
 
 export default {
   name: 'App',
 
   components: {
-    Home
+    // Home,
+    // Save,
+    // Fetch
   },
 
-  data: () => ({
-    clients: [],
-    dataLoaded: false
-  }),
-
-  created() {
-   fetch('https://jsonplaceholder.typicode.com/users')
-     .then(res => res.json())
-     .then(json => {
-       this.clients = json
-       JSON.parse(JSON.stringify(this.clients))
-       this.dataLoaded = true
-     })
+  data: function () {
+    return {
+      
+    }
   }
 }
 </script>
